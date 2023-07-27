@@ -6,27 +6,37 @@ const ExpenseForm = () => {
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
 
-  const titleChangeHandler = (e) => {
-    console.log(e.target.value);
-    setEnteredTitle(e.target.value);
+  const inputChangeHandler = (identifier, value) => {
+    if (identifier === "title") {
+      setEnteredTitle(value);
+    } else if (identifier === "amount") {
+      setEnteredAmount(value);
+    } else {
+      setEnteredDate(value);
+    }
   };
 
-  const amountChangeHandler = (e) => {
-    console.log(e.target.value);
-    setEnteredAmount(e.target.value);
-  };
+  const submitHandler = (e) => {
+    e.preventDefault();
 
-  const dateChangeHandler = (e) => {
-    console.log(e.target.value);
-    setEnteredDate(e.target.value);
+    const expenseData = {
+      title: enteredTitle,
+      amount: enteredAmount,
+      date: new Date(enteredDate),
+    };
+
+    console.log(expenseData);
   };
 
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
-          <input type="text" onChange={titleChangeHandler} />
+          <input
+            type="text"
+            onChange={(e) => inputChangeHandler("title", e.target.value)}
+          />
         </div>
         <div className="new-expense__control">
           <label>Amount</label>
@@ -34,7 +44,7 @@ const ExpenseForm = () => {
             type="number"
             min="0.01"
             step="0.01"
-            onChange={amountChangeHandler}
+            onChange={(e) => inputChangeHandler("amount", e.target.value)}
           />
         </div>
         <div className="new-expense__control">
@@ -43,7 +53,7 @@ const ExpenseForm = () => {
             type="date"
             min="2019-01-01"
             max="2023-12-31"
-            onChange={dateChangeHandler}
+            onChange={(e) => inputChangeHandler("date", e.target.value)}
           />
         </div>
       </div>
